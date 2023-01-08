@@ -1,5 +1,5 @@
 @extends('../layouts.admin')
-@section('sub-title','MANAGE ADMINISTRATOR')
+@section('sub-title','MANAGE STUDENTS')
 
 @section('sidebar')
     @include('../partials.admin.sidebar')
@@ -17,15 +17,14 @@
           <div class="card-header pb-0">
             <div class="row">
               <div class="col-md-10">
-                  <h6>MANAGE ADMINISTRATOR</h6>
+                  <h6>MANAGE STUDENTS</h6>
               </div>
               <div class="col-md-2">
-                  <button class="btn btn-dark btn-sm" id="create_record">
-                    ADD NEW ADMIN
+                  <button class="btn btn-primary btn-sm" id="create_record">
+                    ADD NEW STUDENT
                   </button>
               </div>
             </div>
-           
           </div>
           <div class="card-body ">
             <div class="table-responsive p-0">
@@ -33,21 +32,21 @@
                 <thead>
                   <tr>
                     <th class="text-secondary opacity-7"></th>
-                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Name</th>
-                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Email</th>
+                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Id</th>
+                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Student Name</th>
                     <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Created At</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($admins as $admin)
+                  @foreach($students as $student)
                     <tr>
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <button id="{{$admin->user->id}}" class="btn btn-primary btn-sm view" >
+                            <button id="{{$student->id}}" class="btn btn-primary btn-sm view" >
                               VIEW/EDIT
                             </button>
-                            <button id="{{$admin->user->id}}" class="btn btn-danger btn-sm remove" >
+                            <button id="{{$student->id}}" class="btn btn-danger btn-sm remove" >
                               REMOVE
                             </button>
                           </div>
@@ -57,7 +56,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$admin->user->name ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$student->id ?? ''}}</h6>
                          
                           </div>
                         </div>
@@ -65,15 +64,16 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$admin->user->email ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$student->name ?? ''}}</h6>
                          
                           </div>
                         </div>
                       </td>
+                      
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$admin->user->created_at->format('M j , Y h:i A') ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$student->created_at->format('M j , Y h:i A') ?? ''}}</h6>
                          
                           </div>
                         </div>
@@ -106,7 +106,7 @@
       </div>
       <br>
       <div class="float-start">
-        <h6 class="text-uppercase">ADMIN INFORMATION</h6>
+        <h6 class="text-uppercase">TEACHER INFORMATION</h6>
       </div>
       <!-- End Toggle Button -->
     </div>
@@ -123,22 +123,68 @@
                     </span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label text-uppercase" >Email <span class="text-danger">*</span></label>
-                    <input type="email" name="email" id="email" class="form-control" />
+                    <label class="control-label text-uppercase" >Address <span class="text-danger">*</span></label>
+                    <input type="text" name="address" id="address" class="form-control" />
                     <span class="invalid-feedback" role="alert">
-                        <strong id="error-email"></strong>
+                        <strong id="error-address"></strong>
                     </span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label text-uppercase" >Password <span class="text-danger">*</span></label>
-                    <input type="password" name="password" id="password" class="form-control" />
+                    <label class="control-label text-uppercase" >Grade & Section<span class="text-danger">*</span></label>
+                    <input type="text" name="grade_section" id="grade_section" class="form-control" />
                     <span class="invalid-feedback" role="alert">
-                        <strong id="error-password"></strong>
+                        <strong id="error-grade_section"></strong>
                     </span>
                 </div>
+                <div class="form-group">
+                    <label class="control-label text-uppercase" >Mobile Number<span class="text-danger">*</span></label>
+                    <input type="number" name="mobile_number" id="mobile_number" class="form-control" />
+                    <span class="invalid-feedback" role="alert">
+                        <strong id="error-mobile_number"></strong>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label text-uppercase" >Mother Name <span class="text-danger">*</span></label>
+                    <input type="text" name="mother_name" id="mother_name" class="form-control" />
+                    <span class="invalid-feedback" role="alert">
+                        <strong id="error-mother_name"></strong>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label text-uppercase" >Mobile Number<span class="text-danger">*</span></label>
+                    <input type="number" name="mother_number" id="mother_number" class="form-control" />
+                    <span class="invalid-feedback" role="alert">
+                        <strong id="error-mother_number"></strong>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label text-uppercase" >Father Name <span class="text-danger">*</span></label>
+                    <input type="text" name="father_name" id="father_name" class="form-control" />
+                    <span class="invalid-feedback" role="alert">
+                        <strong id="error-father_name"></strong>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label text-uppercase" >Mobile Number<span class="text-danger">*</span></label>
+                    <input type="number" name="father_number" id="father_number" class="form-control" />
+                    <span class="invalid-feedback" role="alert">
+                        <strong id="error-father_number"></strong>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label text-uppercase" >LRN<span class="text-danger">*</span></label>
+                    <input type="text" name="lrn" id="lrn" class="form-control" />
+                    <span class="invalid-feedback" role="alert">
+                        <strong id="error-lrn"></strong>
+                    </span>
+                </div>
+                
+               
                 <input type="hidden" name="id" id="id"  />
                 <input type="hidden" name="action" id="action" value="ADD"  />
-                <input type="hidden" name="role" id="role" value="1"  />
 
                 <div class="card-footer text-center">
                     <input type="submit" name="action_button" id="action_button" class="text-uppercase btn-wd btn btn-primary" value="Submit" />
@@ -179,14 +225,14 @@
       $('#id').val(id);
 
       $.ajax({
-          url :"/admin/account/"+id+"/edit",
+          url :"/admin/students/"+id+"/edit",
           dataType:"json",
           beforeSend:function(){
               $("#action_button").attr("disabled", true);
           },
           success:function(data){
               $("#action_button").attr("disabled", false);
-
+              console.log(data.result);
               $.each(data.result, function(key,value){
                   if(key == $('#'+key).attr('id')){
                       $('#'+key).val(value)
@@ -207,14 +253,13 @@
   $('#myForm').on('submit', function(event){
     event.preventDefault();
     $('.form-control').removeClass('is-invalid')
-    var url = "/admin/account/store";
+    var url = "/admin/students";
     var method = "POST";
 
     if($('#action').val() == 'EDIT'){
       var id = $('#id').val();
-          url = "/admin/account/" + id;
+          url = "/admin/students/" + id;
           method = "PUT";
-
     }
     $.ajax({
         url: url,
@@ -223,11 +268,9 @@
         dataType:"json",
         beforeSend:function(){
             $("#action_button").attr("disabled", true);
-            $("#action_button").val("Submitting");
         },
         success:function(data){
             $("#action_button").attr("disabled", false);
-            $("#action_button").val("Sumbit");
 
             if(data.errors){
                 $.each(data.errors, function(key,value){
@@ -260,59 +303,59 @@
   });
 
   $(document).on('click', '.remove', function(){
-      var id = $(this).attr('id');
-      $.confirm({
-          title: 'Confirmation',
-          content: 'You really want to remove this record?',
-          type: 'red',
-          buttons: {
-              confirm: {
-                  text: 'confirm',
-                  btnClass: 'btn-blue',
-                  keys: ['enter', 'shift'],
-                  action: function(){
-                      return $.ajax({
-                          url:"/admin/account/"+id,
-                          method:'DELETE',
-                          data: {
-                              _token: '{!! csrf_token() !!}',
-                          },
-                          dataType:"json",
-                          beforeSend:function(){
-                            $(".remove").attr("disabled", true);
-                          },
-                          success:function(data){
-                            $(".remove").attr("disabled", false);
-                            
-                              if(data.success){
-                                $.confirm({
-                                  title: 'Confirmation',
-                                  content: data.success,
-                                  type: 'green',
-                                  buttons: {
-                                          confirm: {
-                                              text: 'confirm',
-                                              btnClass: 'btn-blue',
-                                              keys: ['enter', 'shift'],
-                                              action: function(){
-                                                  location.reload();
-                                              }
-                                          },
-                                          
-                                      }
-                                  });
-                              }
-                          }
-                      })
-                  }
-              },
-              cancel:  {
-                  text: 'cancel',
-                  btnClass: 'btn-red',
-                  keys: ['enter', 'shift'],
-              }
-          }
-      });
+  var id = $(this).attr('id');
+    $.confirm({
+        title: 'Confirmation',
+        content: 'You really want to remove this record?',
+        type: 'red',
+        buttons: {
+            confirm: {
+                text: 'confirm',
+                btnClass: 'btn-blue',
+                keys: ['enter', 'shift'],
+                action: function(){
+                    return $.ajax({
+                        url:"/admin/students/"+id,
+                        method:'DELETE',
+                        data: {
+                            _token: '{!! csrf_token() !!}',
+                        },
+                        dataType:"json",
+                        beforeSend:function(){
+                          $(".remove").attr("disabled", true);
+                        },
+                        success:function(data){
+                          $(".remove").attr("disabled", false);
+                          
+                            if(data.success){
+                              $.confirm({
+                                title: 'Confirmation',
+                                content: data.success,
+                                type: 'green',
+                                buttons: {
+                                        confirm: {
+                                            text: 'confirm',
+                                            btnClass: 'btn-blue',
+                                            keys: ['enter', 'shift'],
+                                            action: function(){
+                                                location.reload();
+                                            }
+                                        },
+                                        
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
+            },
+            cancel:  {
+                text: 'cancel',
+                btnClass: 'btn-red',
+                keys: ['enter', 'shift'],
+            }
+        }
+    });
   });
 </script>
 

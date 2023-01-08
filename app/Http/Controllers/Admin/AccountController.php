@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RoleUser;
 use App\Models\User;
-use App\Models\ActivityLog;
+use App\Models\Teacher;
+use App\Models\Parents;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 use Gate;
@@ -14,11 +15,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AccountController extends Controller
 {
-    public function staffs()
+    public function account_teachers()
     {
-        abort_if(Gate::denies('admin_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $staffs = RoleUser::where('role_id', 2)->orderBy('user_id', 'desc')->get();
-        return view('admin.manage_staffs' , compact('staffs'));
+        $select_teachers = Teacher::where('user_id', null)->latest()->get();
+        $teachers = RoleUser::where('role_id', 2)->orderBy('user_id', 'desc')->get();
+        return view('admin.manage_teachers_account' , compact('teachers','select_teachers'));
+    }
+
+    public function account_parents()
+    {
+        $select_parents = Parents::where('user_id', null)->latest()->get();
+        $parents = RoleUser::where('role_id', 3)->orderBy('user_id', 'desc')->get();
+        return view('admin.manage_parents_account' , compact('parents','select_parents'));
     }
     public function admins()
     {
@@ -37,10 +45,14 @@ class AccountController extends Controller
 
     public function store(Request $request){
         date_default_timezone_set('Asia/Manila');
+        $request->input('role') == 2 ? $validation_teacher = 'required' : $validation_teacher = 'nullable';
+        $request->input('role') == 3 ? $validation_parent = 'required' : $validation_parent = 'nullable';
+        
         $validated =  Validator::make($request->all(), [
-            'name'           => ['required'],
+            'teacher_id'     => [$validation_teacher],
+            'parent_id'      => [$validation_parent],
+            'name'           => ['nullable'],
             'email'          => ['required',  'email', 'max:255', 'unique:users'],
-            'contact_number' => ['required', 'string', 'min:8','max:11'],
             'password'       => ['required', 'min:8'],
         ]);
 
@@ -51,14 +63,23 @@ class AccountController extends Controller
         $account = User::create([
             'name'                  => $request->input('name'),
             'email'                 => $request->input('email'),
-            'contact_number'        => $request->input('contact_number'),
             'password'              => Hash::make($request->input('password')),
             'email_verified_at'     => date("Y-m-d H:i:s"),
         ]);
+
         RoleUser::insert([
             'user_id' => $account->id,
             'role_id' => $request->input('role'),
         ]);
+        if($request->input('role') == 2){
+            Teacher::where('id',$request->input('teacher_id'))->update([
+                    'user_id' => $account->id,
+            ]);
+        }elseif($request->input('role') == 3){
+            Parents::where('id',$request->input('parent_id'))->update([
+                'user_id' => $account->id,
+        ]);
+        }
     
 
         return response()->json(['success' => 'Successfully created.']);
@@ -67,9 +88,9 @@ class AccountController extends Controller
     public function update(Request $request ,User $account){
         date_default_timezone_set('Asia/Manila');
         $validated =  Validator::make($request->all(), [
-            'name'           => ['required'],
+            
+            'name'           => ['nullable'],
             'email'          => ['required',  'email', 'max:255', 'unique:users,email,'.$account->id],
-            'contact_number' => ['required', 'string', 'min:8','max:11'],
             'password'       => ['nullable','min:8'],
         ]);
 
@@ -80,7 +101,6 @@ class AccountController extends Controller
         $account->update([
             'name'                  => $request->input('name'),
             'email'                 => $request->input('email'),
-            'contact_number'        => $request->input('contact_number'),
             'password'              => Hash::make($request->input('password')),
         ]);
 
@@ -90,7 +110,12 @@ class AccountController extends Controller
 
     public function destroy(User $account){
         date_default_timezone_set('Asia/Manila');
-       
+        Teacher::where('user_id', $account->id)->update([
+            'user_id' => null,
+        ]);
+        Parents::where('user_id', $account->id)->update([
+            'user_id' => null,
+        ]);
         RoleUser::where('user_id', $account->id)->delete();
         $account->delete();
         return response()->json(['success' => 'Successfully removed.']);

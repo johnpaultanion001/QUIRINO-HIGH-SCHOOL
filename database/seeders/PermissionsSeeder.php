@@ -15,6 +15,9 @@ class PermissionsSeeder extends Seeder
             [
                 'title' => 'teacher_access',
             ],
+            [
+                'title' => 'parent_access',
+            ],
         ];
 
         Permission::insert($permissions);

@@ -1,5 +1,5 @@
 @extends('../layouts.admin')
-@section('sub-title','MANAGE STAFFS')
+@section('sub-title','MANAGE SUBJECTS')
 
 @section('sidebar')
     @include('../partials.admin.sidebar')
@@ -17,15 +17,14 @@
           <div class="card-header pb-0">
             <div class="row">
               <div class="col-md-10">
-                  <h6>MANAGE TEACHERS</h6>
+                  <h6>MANAGE SUBJECTS</h6>
               </div>
               <div class="col-md-2">
-                  <button class="btn btn-dark btn-sm" id="create_record">
-                    ADD NEW TEACHER
+                  <button class="btn btn-primary btn-sm" id="create_record">
+                    ADD NEW SUBJECT
                   </button>
               </div>
             </div>
-           
           </div>
           <div class="card-body ">
             <div class="table-responsive p-0">
@@ -33,23 +32,22 @@
                 <thead>
                   <tr>
                     <th class="text-secondary opacity-7"></th>
-                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Name</th>
-                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Email</th>
-                    
-                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Contact Number</th>
+                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Id</th>
+                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Subject Code</th>
+                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Subject Title</th>
                     <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Created At</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($staffs as $staff)
+                  @foreach($subjects as $subject)
                     <tr>
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <button id="{{$staff->user->id}}" class="btn btn-primary btn-sm view" >
+                            <button id="{{$subject->id}}" class="btn btn-primary btn-sm view" >
                               VIEW/EDIT
                             </button>
-                            <button id="{{$staff->user->id}}" class="btn btn-danger btn-sm remove" >
+                            <button id="{{$subject->id}}" class="btn btn-danger btn-sm remove" >
                               REMOVE
                             </button>
                           </div>
@@ -59,7 +57,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$staff->user->name ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$subject->id ?? ''}}</h6>
                          
                           </div>
                         </div>
@@ -67,7 +65,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$staff->user->email ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$subject->subject_code ?? ''}}</h6>
                          
                           </div>
                         </div>
@@ -76,7 +74,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$staff->user->contact_number ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$subject->subject_title ?? ''}}</h6>
                          
                           </div>
                         </div>
@@ -84,7 +82,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$staff->user->created_at->format('M j , Y h:i A') ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$subject->created_at->format('M j , Y h:i A') ?? ''}}</h6>
                          
                           </div>
                         </div>
@@ -117,7 +115,7 @@
       </div>
       <br>
       <div class="float-start">
-        <h6 class="text-uppercase">TEACHER INFORMATION</h6>
+        <h6 class="text-uppercase">CLASS INFORMATION</h6>
       </div>
       <!-- End Toggle Button -->
     </div>
@@ -127,37 +125,22 @@
             @csrf
             <div class="card-body">
                 <div class="form-group">
-                    <label class="control-label text-uppercase" >Name <span class="text-danger">*</span></label>
-                    <input type="text" name="name" id="name" class="form-control" />
+                    <label class="control-label text-uppercase" >Subject Code <span class="text-danger">*</span></label>
+                    <input type="text" name="subject_code" id="subject_code" class="form-control" />
                     <span class="invalid-feedback" role="alert">
-                        <strong id="error-name"></strong>
+                        <strong id="error-subject_code"></strong>
                     </span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label text-uppercase" >Email <span class="text-danger">*</span></label>
-                    <input type="email" name="email" id="email" class="form-control" />
+                    <label class="control-label text-uppercase" >Subject Title <span class="text-danger">*</span></label>
+                    <input type="text" name="subject_title" id="subject_title" class="form-control" />
                     <span class="invalid-feedback" role="alert">
-                        <strong id="error-email"></strong>
+                        <strong id="error-subject_title"></strong>
                     </span>
                 </div>
-                <div class="form-group">
-                    <label class="control-label text-uppercase" >Contact Number <span class="text-danger">*</span></label>
-                    <input type="number" name="contact_number" id="contact_number" class="form-control" />
-                    <span class="invalid-feedback" role="alert">
-                        <strong id="error-contact_number"></strong>
-                    </span>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label text-uppercase" >Password <span class="text-danger">*</span></label>
-                    <input type="password" name="password" id="password" class="form-control" />
-                    <span class="invalid-feedback" role="alert">
-                        <strong id="error-password"></strong>
-                    </span>
-                </div>
+               
                 <input type="hidden" name="id" id="id"  />
                 <input type="hidden" name="action" id="action" value="ADD"  />
-                <input type="hidden" name="role" id="role" value="2"  />
 
                 <div class="card-footer text-center">
                     <input type="submit" name="action_button" id="action_button" class="text-uppercase btn-wd btn btn-primary" value="Submit" />
@@ -198,14 +181,14 @@
       $('#id').val(id);
 
       $.ajax({
-          url :"/admin/account/"+id+"/edit",
+          url :"/admin/subjects/"+id+"/edit",
           dataType:"json",
           beforeSend:function(){
               $("#action_button").attr("disabled", true);
           },
           success:function(data){
               $("#action_button").attr("disabled", false);
-
+              console.log(data.result);
               $.each(data.result, function(key,value){
                   if(key == $('#'+key).attr('id')){
                       $('#'+key).val(value)
@@ -226,12 +209,12 @@
   $('#myForm').on('submit', function(event){
     event.preventDefault();
     $('.form-control').removeClass('is-invalid')
-    var url = "/admin/account/store";
+    var url = "/admin/subjects";
     var method = "POST";
 
     if($('#action').val() == 'EDIT'){
       var id = $('#id').val();
-          url = "/admin/account/" + id;
+          url = "/admin/subjects/" + id;
           method = "PUT";
     }
     $.ajax({
@@ -288,7 +271,7 @@
                 keys: ['enter', 'shift'],
                 action: function(){
                     return $.ajax({
-                        url:"/admin/account/"+id,
+                        url:"/admin/subjects/"+id,
                         method:'DELETE',
                         data: {
                             _token: '{!! csrf_token() !!}',

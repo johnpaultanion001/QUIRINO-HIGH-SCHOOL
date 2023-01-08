@@ -9,21 +9,26 @@ class Student extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
-        'student_folder',
         'name',
-        'age',
         'address',
-        'grade',
-        'section',
-        'schedule',
-        'image1',
-        'image2',
-        'isRemove',
+        'grade_section',
+        'mobile_number',
+        'mother_name',
+        'mother_number',
+        'father_name',
+        'father_number',
+        'lrn',
     ];
 
-    public function user()
+    public function attendances()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasMany(AttendanceStudent::class, 'student_id');
     }
+
+    public function activities()
+    {
+        return $this->hasMany(GradeStudent::class, 'student_id');
+    }
+
+   
 }

@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Student;
+use App\Models\Parents;
+use App\Models\Teacher;
 
 class UserSeeder extends Seeder
 {
@@ -19,75 +20,65 @@ class UserSeeder extends Seeder
             // For admin
             [
                 'id'                => '1',
-                'name'              => 'Admin',
+                'name'              => 'Admin sample',
                 'email'             => 'admin@admin.com',
                 'password'          => '$2y$10$zPiaTbYwkxYcejFmEimhWedeAogTJvEb/yGmBVx390ihhPFy8r896' ,//password
-                'remember_token'    => null,
-                'contact_number'    => '09776668820',
-                'address'           => 'Antipol City',
                 'created_at'        => date("Y-m-d H:i:s"),
                 'updated_at'        => date("Y-m-d H:i:s"),
                 'email_verified_at' => date("Y-m-d H:i:s"),
             ],
+          
+            // For Teacher
             [
                 'id'                => '2',
-                'name'              => 'Admin2',
-                'email'             => 'admin2@admin2.com',
-                'password'          => '$2y$10$zPiaTbYwkxYcejFmEimhWedeAogTJvEb/yGmBVx390ihhPFy8r896' ,//password
-                'remember_token'    => null,
-                'contact_number'    => '09776668821',
-                'address'           => 'Antipol City',
-                'created_at'        => date("Y-m-d H:i:s"),
-                'updated_at'        => date("Y-m-d H:i:s"),
-                'email_verified_at' => date("Y-m-d H:i:s"),
-            ],
-            // For Staff
-            [
-                'id'                => '3',
-                'name'              => 'Teacher 1',
+                'name'              => 'Teacher sample',
                 'email'             => 'teacher@teacher.com',
                 'password'          => '$2y$10$zPiaTbYwkxYcejFmEimhWedeAogTJvEb/yGmBVx390ihhPFy8r896' ,//password
-                'remember_token'    => null,
-                'contact_number'    => '09776668822',
-                'address'           => 'Antipol City',
                 'created_at'        => date("Y-m-d H:i:s"),
                 'updated_at'        => date("Y-m-d H:i:s"),
                 'email_verified_at' => date("Y-m-d H:i:s"),
             ],
+            // For parent
             [
-                'id'                => '4',
-                'name'              => 'Teacher 2',
-                'email'             => 'teacher2@teacher2.com',
+                'id'                => '3',
+                'name'              => 'Parent sample',
+                'email'             => 'parent@parent.com',
                 'password'          => '$2y$10$zPiaTbYwkxYcejFmEimhWedeAogTJvEb/yGmBVx390ihhPFy8r896' ,//password
-                'remember_token'    => null,
-                'contact_number'    => '09776668823',
-                'address'           => 'Antipol City',
                 'created_at'        => date("Y-m-d H:i:s"),
                 'updated_at'        => date("Y-m-d H:i:s"),
                 'email_verified_at' => date("Y-m-d H:i:s"),
             ],
         ];
 
-        $students = [
-            // students
+        $teachers = [
+            // Teacher Info
             [
-                'id'                          => '1',
-                'user_id'                     => '1',
-                'student_folder'              => 'Tony Stark_739674',
-                'name'                        => 'Tony Stark',
-                'age'                         => '22',
-                'address'                     => 'test',
-                'grade'                       => 'test',
-                'section'                     => 'test',
-                'schedule'                    => 'test',
-                'image1'                      => 'Tony Stark_739674/1.jpg',
-                'image2'                      => 'Tony Stark_739674/2.jpg',
-                'created_at'                  => date("Y-m-d H:i:s"),
-                'updated_at'                  => date("Y-m-d H:i:s"),
+                'id'                => '1',
+                'name'              => 'test teacher',
+                'contact_number'              => '09775556682',
+                'profession'              => 'Teacher',
+                'user_id'   => '2',
+                'created_at'        => date("Y-m-d H:i:s"),
+                'updated_at'        => date("Y-m-d H:i:s"),
+               
+            ],
+        ];
+
+        $parents = [
+            // parent Info
+            [
+                'id'                => '1',
+                'name'              => 'test parent',
+                'contact_number'              => '09775556682',
+                'user_id'   => '3',
+                'created_at'        => date("Y-m-d H:i:s"),
+                'updated_at'        => date("Y-m-d H:i:s"),
+               
             ],
         ];
 
         User::insert($users);
-        Student::insert($students);
+        Teacher::insert($teachers);
+        Parents::insert($parents);
     }
 }

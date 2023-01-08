@@ -1,5 +1,5 @@
 @extends('../layouts.admin')
-@section('sub-title','MANAGE ADMINISTRATOR')
+@section('sub-title','MANAGE TEACHERS ACCOUNT')
 
 @section('sidebar')
     @include('../partials.admin.sidebar')
@@ -17,15 +17,14 @@
           <div class="card-header pb-0">
             <div class="row">
               <div class="col-md-10">
-                  <h6>MANAGE ADMINISTRATOR</h6>
+                  <h6>MANAGE TEACHERS ACCOUNT</h6>
               </div>
               <div class="col-md-2">
                   <button class="btn btn-dark btn-sm" id="create_record">
-                    ADD NEW ADMIN
+                    ADD NEW TEACHER ACCOUNT
                   </button>
               </div>
             </div>
-           
           </div>
           <div class="card-body ">
             <div class="table-responsive p-0">
@@ -35,19 +34,21 @@
                     <th class="text-secondary opacity-7"></th>
                     <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Name</th>
                     <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Email</th>
+                    
+                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Contact Number</th>
                     <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Created At</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($admins as $admin)
+                  @foreach($teachers as $teacher)
                     <tr>
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <button id="{{$admin->user->id}}" class="btn btn-primary btn-sm view" >
+                            <button id="{{$teacher->user->id}}" class="btn btn-primary btn-sm view" >
                               VIEW/EDIT
                             </button>
-                            <button id="{{$admin->user->id}}" class="btn btn-danger btn-sm remove" >
+                            <button id="{{$teacher->user->id}}" class="btn btn-danger btn-sm remove" >
                               REMOVE
                             </button>
                           </div>
@@ -57,7 +58,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$admin->user->name ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$teacher->user->teacher->name ?? ''}}</h6>
                          
                           </div>
                         </div>
@@ -65,7 +66,16 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$admin->user->email ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$teacher->user->email ?? ''}}</h6>
+                         
+                          </div>
+                        </div>
+                      </td>
+                      
+                      <td>
+                        <div class="d-flex px-2 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">{{$teacher->user->teacher->contact_number ?? ''}}</h6>
                          
                           </div>
                         </div>
@@ -73,7 +83,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$admin->user->created_at->format('M j , Y h:i A') ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$teacher->user->created_at->format('M j , Y h:i A') ?? ''}}</h6>
                          
                           </div>
                         </div>
@@ -106,7 +116,7 @@
       </div>
       <br>
       <div class="float-start">
-        <h6 class="text-uppercase">ADMIN INFORMATION</h6>
+        <h6 class="text-uppercase">TEACHER INFORMATION</h6>
       </div>
       <!-- End Toggle Button -->
     </div>
@@ -115,11 +125,15 @@
         <form method="post" id="myForm" class="contact-form">
             @csrf
             <div class="card-body">
-                <div class="form-group">
-                    <label class="control-label text-uppercase" >Name <span class="text-danger">*</span></label>
-                    <input type="text" name="name" id="name" class="form-control" />
+                <div  class="form-group teacher_section">
+                    <label class="control-label text-uppercase" >Select A Teacher <span class="text-danger">*</span></label>
+                    <select name="teacher_id" id="teacher_id" class="form-control">
+                      @foreach($select_teachers as $teacher)
+                      <option value="{{$teacher->id}}">{{$teacher->name}}</option>
+                      @endforeach
+                    </select>
                     <span class="invalid-feedback" role="alert">
-                        <strong id="error-name"></strong>
+                        <strong id="error-teacher_id"></strong>
                     </span>
                 </div>
                 <div class="form-group">
@@ -129,6 +143,7 @@
                         <strong id="error-email"></strong>
                     </span>
                 </div>
+              
                 <div class="form-group">
                     <label class="control-label text-uppercase" >Password <span class="text-danger">*</span></label>
                     <input type="password" name="password" id="password" class="form-control" />
@@ -138,7 +153,7 @@
                 </div>
                 <input type="hidden" name="id" id="id"  />
                 <input type="hidden" name="action" id="action" value="ADD"  />
-                <input type="hidden" name="role" id="role" value="1"  />
+                <input type="hidden" name="role" id="role" value="2"  />
 
                 <div class="card-footer text-center">
                     <input type="submit" name="action_button" id="action_button" class="text-uppercase btn-wd btn btn-primary" value="Submit" />
@@ -165,6 +180,7 @@
       $('#action').val('ADD');
       $('.form-control').removeClass('is-invalid')
       $('#myForm')[0].reset();
+      $('.teacher_section').show();
       var fixedPlugin = document.querySelector('.fixed-plugin');
       if (!fixedPlugin.classList.contains('show')) {
           fixedPlugin.classList.add('show');
@@ -177,6 +193,7 @@
       var id = $(this).attr('id');
       $('#action').val('EDIT');
       $('#id').val(id);
+      $('.teacher_section').hide();
 
       $.ajax({
           url :"/admin/account/"+id+"/edit",
@@ -214,7 +231,6 @@
       var id = $('#id').val();
           url = "/admin/account/" + id;
           method = "PUT";
-
     }
     $.ajax({
         url: url,
@@ -223,11 +239,9 @@
         dataType:"json",
         beforeSend:function(){
             $("#action_button").attr("disabled", true);
-            $("#action_button").val("Submitting");
         },
         success:function(data){
             $("#action_button").attr("disabled", false);
-            $("#action_button").val("Sumbit");
 
             if(data.errors){
                 $.each(data.errors, function(key,value){
@@ -260,59 +274,59 @@
   });
 
   $(document).on('click', '.remove', function(){
-      var id = $(this).attr('id');
-      $.confirm({
-          title: 'Confirmation',
-          content: 'You really want to remove this record?',
-          type: 'red',
-          buttons: {
-              confirm: {
-                  text: 'confirm',
-                  btnClass: 'btn-blue',
-                  keys: ['enter', 'shift'],
-                  action: function(){
-                      return $.ajax({
-                          url:"/admin/account/"+id,
-                          method:'DELETE',
-                          data: {
-                              _token: '{!! csrf_token() !!}',
-                          },
-                          dataType:"json",
-                          beforeSend:function(){
-                            $(".remove").attr("disabled", true);
-                          },
-                          success:function(data){
-                            $(".remove").attr("disabled", false);
-                            
-                              if(data.success){
-                                $.confirm({
-                                  title: 'Confirmation',
-                                  content: data.success,
-                                  type: 'green',
-                                  buttons: {
-                                          confirm: {
-                                              text: 'confirm',
-                                              btnClass: 'btn-blue',
-                                              keys: ['enter', 'shift'],
-                                              action: function(){
-                                                  location.reload();
-                                              }
-                                          },
-                                          
-                                      }
-                                  });
-                              }
-                          }
-                      })
-                  }
-              },
-              cancel:  {
-                  text: 'cancel',
-                  btnClass: 'btn-red',
-                  keys: ['enter', 'shift'],
-              }
-          }
-      });
+  var id = $(this).attr('id');
+    $.confirm({
+        title: 'Confirmation',
+        content: 'You really want to remove this record?',
+        type: 'red',
+        buttons: {
+            confirm: {
+                text: 'confirm',
+                btnClass: 'btn-blue',
+                keys: ['enter', 'shift'],
+                action: function(){
+                    return $.ajax({
+                        url:"/admin/account/"+id,
+                        method:'DELETE',
+                        data: {
+                            _token: '{!! csrf_token() !!}',
+                        },
+                        dataType:"json",
+                        beforeSend:function(){
+                          $(".remove").attr("disabled", true);
+                        },
+                        success:function(data){
+                          $(".remove").attr("disabled", false);
+                          
+                            if(data.success){
+                              $.confirm({
+                                title: 'Confirmation',
+                                content: data.success,
+                                type: 'green',
+                                buttons: {
+                                        confirm: {
+                                            text: 'confirm',
+                                            btnClass: 'btn-blue',
+                                            keys: ['enter', 'shift'],
+                                            action: function(){
+                                                location.reload();
+                                            }
+                                        },
+                                        
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
+            },
+            cancel:  {
+                text: 'cancel',
+                btnClass: 'btn-red',
+                keys: ['enter', 'shift'],
+            }
+        }
+    });
   });
 </script>
 

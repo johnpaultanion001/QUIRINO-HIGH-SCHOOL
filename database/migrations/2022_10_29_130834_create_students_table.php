@@ -15,17 +15,15 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->nullable();
-            $table->string('student_folder')->nullable();
             $table->string('name')->nullable();
-            $table->string('age')->nullable();
             $table->string('address')->nullable();
-            $table->string('grade')->nullable();
-            $table->string('section')->nullable();
-            $table->longText('schedule')->nullable();
-            $table->string('image1')->nullable();
-            $table->string('image2')->nullable();
-            $table->boolean('isRemove')->default(false);
+            $table->string('grade_section')->nullable();
+            $table->string('mobile_number')->nullable();
+            $table->string('mother_name')->nullable();
+            $table->string('mother_number')->nullable();
+            $table->string('father_name')->nullable();
+            $table->longText('father_number')->nullable();
+            $table->string('lrn')->nullable();
             $table->timestamps();
         });
     }
