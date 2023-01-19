@@ -45,7 +45,7 @@
         <li class="nav-item dropdown pe-2 d-flex align-items-center">
           <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fa fa-user me-sm-1"></i>
-              <span class="d-sm-inline d-none text-uppercase">{{auth()->user()->name}}</span>
+              <span class="d-sm-inline d-none text-uppercase">{{auth()->user()->name ?? auth()->user()->teacher->name ?? auth()->user()->parent->name}}</span>
             <i class="fa-solid fa-angle-down"></i>
           </a>
         

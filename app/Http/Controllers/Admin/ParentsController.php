@@ -39,7 +39,11 @@ class ParentsController extends Controller
 
         return response()->json(['success' => 'Successfully created.']);
     }
-
+    public function show(Parents $parent)
+    {
+        $students = Student::latest()->get();
+        return view('admin.parents.assign_student' , compact('parent','students'));
+    }
     
     public function edit(Parents $parent)
     {

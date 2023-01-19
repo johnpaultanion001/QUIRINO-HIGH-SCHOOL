@@ -13,6 +13,16 @@ class Parents extends Model
         'id',
         'name',
         'contact_number',
+        'user_id',
 
     ];
+    public function students()
+    {
+        return $this->hasMany(StudentParent::class, 'parent_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

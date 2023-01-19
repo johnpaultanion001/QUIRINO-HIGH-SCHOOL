@@ -5,27 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GradeStudent extends Model
+class Notification extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'student_id',
-        'subject_id',
-        'activity',
-        'quiz',
-        'performance',
-        'exam',
-        'total_grade',
+        'email',
+        'message',
     ];
 
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id');
-    }
-
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class, 'student_id');
     }
 }

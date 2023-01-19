@@ -63,7 +63,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ request()->is('admin/staffs') ? 'active' : '' }}" href="/admin/account_teachers">
+          <a class="nav-link {{ request()->is('admin/account_teachers') ? 'active' : '' }}" href="/admin/account_teachers">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
             </div>
@@ -105,6 +105,35 @@
           <i class="fa-solid fa-list text-dark text-sm"></i>
           </div>
           <span class="nav-link-text ms-1">All Classes</span>
+        </a>
+      </li>
+    </ul>
+    @endcan
+
+    @can('parent_access')
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link {{ request()->is('parent/students') || request()->is('parent/students/*') ? 'active' : '' }}" href="/parent/students">
+          <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="fa-solid fa-list text-dark text-sm"></i>
+          </div>
+          <span class="nav-link-text ms-1">Students Record</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ request()->is('parent/notifications') || request()->is('parent/notifications/*') ? 'active' : '' }}" href="/parent/notifications">
+          <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="fa-solid fa-list text-dark text-sm"></i>
+          </div>
+          <span class="nav-link-text ms-1">Notification</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ request()->is('parent/faq') || request()->is('parent/faq/*') ? 'active' : '' }}" href="/parent/faq">
+          <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="fa-solid fa-list text-dark text-sm"></i>
+          </div>
+          <span class="nav-link-text ms-1">FAQ</span>
         </a>
       </li>
     </ul>

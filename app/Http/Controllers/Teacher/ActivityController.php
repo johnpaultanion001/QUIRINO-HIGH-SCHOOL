@@ -24,6 +24,7 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $validated =  Validator::make($request->all(), [
+            'subject_id'        => ['required'],
             'activity'           => ['required'],
             'quiz'           => ['required'],
             'performance'           => ['required'],
@@ -38,6 +39,7 @@ class ActivityController extends Controller
         }
 
         GradeStudent::create([
+            'subject_id'                => $request->input('subject_id'),
             'student_id'                => $request->input('student_id'),
             'activity'                  => $request->input('activity'),
             'quiz'                 => $request->input('quiz'),
@@ -72,6 +74,7 @@ class ActivityController extends Controller
     public function update(Request $request, GradeStudent $activity)
     {
         $validated =  Validator::make($request->all(), [
+            'subject_id'        => ['required'],
             'activity'           => ['required'],
             'quiz'           => ['required'],
             'performance'           => ['required'],
@@ -86,6 +89,7 @@ class ActivityController extends Controller
         }
 
         $activity->update([
+            'subject_id'                => $request->input('subject_id'),
             'activity'                  => $request->input('activity'),
             'quiz'                 => $request->input('quiz'),
             'performance'                 => $request->input('performance'),

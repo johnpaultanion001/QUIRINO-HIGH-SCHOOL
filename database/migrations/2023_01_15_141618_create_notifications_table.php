@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassesTeachersTable extends Migration
+class CreateNotificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateClassesTeachersTable extends Migration
      */
     public function up()
     {
-        Schema::create('classes_teachers', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('class_id')->nullable();
-            $table->string('teacher_id')->nullable();
-            $table->boolean('isAdvisory')->default(false);
+            $table->string('student_id')->nullable();
+            $table->string('email')->nullable();
+            $table->longText('message')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateClassesTeachersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classes_teachers');
+        Schema::dropIfExists('notifications');
     }
 }

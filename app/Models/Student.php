@@ -30,5 +30,17 @@ class Student extends Model
         return $this->hasMany(GradeStudent::class, 'student_id');
     }
 
+    public function classes()
+    {
+        return $this->hasMany(ClassesStudents::class, 'student_id');
+    }
+
+    public function parents()
+    {
+        return $this->hasMany(StudentParent::class, 'student_id');
+    }
+
+    
+
    
 }

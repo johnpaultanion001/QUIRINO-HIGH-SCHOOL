@@ -16,6 +16,7 @@ class CreateGradeStudentsTable extends Migration
         Schema::create('grade_students', function (Blueprint $table) {
             $table->id();
             $table->string('student_id')->nullable();
+            $table->string('subject_id')->nullable();
             $table->string('activity')->nullable();
             $table->string('quiz')->nullable();
             $table->string('performance')->nullable();

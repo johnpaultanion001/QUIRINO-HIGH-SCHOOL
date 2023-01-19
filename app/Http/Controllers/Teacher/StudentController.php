@@ -8,6 +8,7 @@ use File;
 use Validator;
 use App\Models\Student;
 use App\Models\Classes;
+use App\Models\Subject;
 use App\Models\ClassesTeachers;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,8 +29,8 @@ class StudentController extends Controller
 
     public function show(Student $student)
     {
-        
-        return view('teacher.students.student_info' , compact('student'));
+        $subjects = Subject::latest()->get();
+        return view('teacher.students.student_info' , compact('student', 'subjects'));
     }
     
     

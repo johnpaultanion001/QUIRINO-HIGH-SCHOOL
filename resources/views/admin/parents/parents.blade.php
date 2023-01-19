@@ -44,6 +44,9 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
+                            <a href="/admin/parents/{{$parent->id}}" class="btn btn-primary btn-success assign">
+                              ASSIGN STUDENTS
+                            </a>
                             <button id="{{$parent->id}}" class="btn btn-primary btn-sm view" >
                               VIEW/EDIT
                             </button>

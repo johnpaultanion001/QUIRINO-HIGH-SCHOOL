@@ -12,6 +12,7 @@ class ClassesTeachers extends Model
     protected $fillable = [
         'class_id',
         'teacher_id',
+        'isAdvisory',
     ];
 
     public function classes()

@@ -1,5 +1,5 @@
 @extends('../layouts.admin')
-@section('sub-title','MANAGE PARENTS ACCOUNT')
+@section('sub-title','ASSIGN STUDENT TO PARENT')
 
 @section('sidebar')
     @include('../partials.admin.sidebar')
@@ -17,11 +17,12 @@
           <div class="card-header pb-0">
             <div class="row">
               <div class="col-md-10">
-                  <h6>MANAGE PARENTS ACCOUNT</h6>
+                    <h6 class="text-uppercase">PARENT NAME: {{$parent->name ?? ''}}</h6>
+                  <h6>ALL STUDENTS</h6>
               </div>
               <div class="col-md-2">
-                  <button class="btn btn-dark btn-sm" id="create_record">
-                    ADD NEW PARENT ACCOUNT
+                  <button class="btn btn-dark btn-sm" id="create_student">
+                    ADD STUDENT
                   </button>
               </div>
             </div>
@@ -32,27 +33,17 @@
                 <thead>
                   <tr>
                     <th class="text-secondary opacity-7"></th>
-                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Name</th>
-                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Email</th>
-                    
-                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Contact Number</th>
-                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Created At</th>
+                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Id</th>
+                    <th class="text-uppercase text-xxs text-dark font-weight-bolder opacity-7">Student Name</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($parents as $parent)
+                  @foreach($parent->students()->get() as $data)
                     <tr>
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            
-                            <a href="/admin/parents/{{$parent->user->parent->id}}" class="btn btn-primary btn-success assign">
-                              ASSIGN STUDENTS
-                            </a>
-                            <button id="{{$parent->user->id}}" class="btn btn-primary btn-sm view" >
-                              VIEW/EDIT
-                            </button>
-                            <button id="{{$parent->user->id}}" class="btn btn-danger btn-sm remove" >
+                            <button id="{{$data->id}}" role="STUDENT" class="btn btn-danger btn-sm remove" >
                               REMOVE
                             </button>
                           </div>
@@ -62,7 +53,7 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$parent->user->parent->name ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$data->id ?? ''}}</h6>
                          
                           </div>
                         </div>
@@ -70,28 +61,12 @@
                       <td>
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$parent->user->email ?? ''}}</h6>
+                            <h6 class="mb-0 text-sm">{{$data->student->name ?? ''}}</h6>
                          
                           </div>
                         </div>
                       </td>
-                      
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$parent->user->parent->contact_number ?? ''}}</h6>
-                         
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{$parent->user->created_at->format('M j , Y h:i A') ?? ''}}</h6>
-                         
-                          </div>
-                        </div>
-                      </td>
+
                       
                     </tr>
                   @endforeach
@@ -120,7 +95,7 @@
       </div>
       <br>
       <div class="float-start">
-        <h6 class="text-uppercase">PARENT INFORMATION</h6>
+        <h6 class="text-uppercase title_select"></h6>
       </div>
       <!-- End Toggle Button -->
     </div>
@@ -129,35 +104,21 @@
         <form method="post" id="myForm" class="contact-form">
             @csrf
             <div class="card-body">
-                <div  class="form-group parent_section">
-                    <label class="control-label text-uppercase" >Select A Parent <span class="text-danger">*</span></label>
-                    <select name="parent_id" id="parent_id" class="form-control">
-                      @foreach($select_parents as $parent)
-                      <option value="{{$parent->id}}">{{$parent->name}}</option>
-                      @endforeach
-                    </select>
-                    <span class="invalid-feedback" role="alert">
-                        <strong id="error-parent_id"></strong>
-                    </span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label text-uppercase" >Email <span class="text-danger">*</span></label>
-                    <input type="email" name="email" id="email" class="form-control" />
-                    <span class="invalid-feedback" role="alert">
-                        <strong id="error-email"></strong>
-                    </span>
-                </div>
-              
-                <div class="form-group">
-                    <label class="control-label text-uppercase" >Password <span class="text-danger">*</span></label>
-                    <input type="password" name="password" id="password" class="form-control" />
-                    <span class="invalid-feedback" role="alert">
-                        <strong id="error-password"></strong>
-                    </span>
-                </div>
+               
+                <label class="control-label text-uppercase" >Select Student <span class="text-danger">*</span></label>
+                <select name="student_id" id="student_id"class="form-control">
+                    @foreach($students as $student)
+                    <option value="{{$student->id}}">{{$student->name}}</option>
+                    @endforeach
+                </select> 
+                <span class="invalid-feedback" role="alert">
+                    <strong id="error-student_id"></strong>
+                </span>
+                
+               
                 <input type="hidden" name="id" id="id"  />
                 <input type="hidden" name="action" id="action" value="ADD"  />
-                <input type="hidden" name="role" id="role" value="3"  />
+                <input type="hidden" name="parent_id" id="parent_id" value="{{$parent->id}}"  />
 
                 <div class="card-footer text-center">
                     <input type="submit" name="action_button" id="action_button" class="text-uppercase btn-wd btn btn-primary" value="Submit" />
@@ -179,45 +140,15 @@
         });
   });
   
-  $(document).on('click', '#create_record', function(){
+
+  $(document).on('click', '#create_student', function(){
       $('#name').focus();
-      $('#action').val('ADD');
+      $('#action').val('STUDENT');
       $('.form-control').removeClass('is-invalid')
       $('#myForm')[0].reset();
-      $('.parent_section').show();
-      var fixedPlugin = document.querySelector('.fixed-plugin');
-      if (!fixedPlugin.classList.contains('show')) {
-          fixedPlugin.classList.add('show');
-      } else {
-          fixedPlugin.classList.remove('show');
-      }
-  });
-
-  $(document).on('click', '.view', function(){
-      var id = $(this).attr('id');
-      $('#action').val('EDIT');
-      $('#id').val(id);
-      $('.parent_section').hide();
-
-      $.ajax({
-          url :"/admin/account/"+id+"/edit",
-          dataType:"json",
-          beforeSend:function(){
-              $("#action_button").attr("disabled", true);
-          },
-          success:function(data){
-              $("#action_button").attr("disabled", false);
-
-              $.each(data.result, function(key,value){
-                  if(key == $('#'+key).attr('id')){
-                      $('#'+key).val(value)
-                  }
-              })
-          }
-      })
+      $('.title_select').text('SELECT STUDENT');
 
       var fixedPlugin = document.querySelector('.fixed-plugin');
-
       if (!fixedPlugin.classList.contains('show')) {
           fixedPlugin.classList.add('show');
       } else {
@@ -228,14 +159,9 @@
   $('#myForm').on('submit', function(event){
     event.preventDefault();
     $('.form-control').removeClass('is-invalid')
-    var url = "/admin/account/store";
+    var url = "/admin/parent_students";
     var method = "POST";
 
-    if($('#action').val() == 'EDIT'){
-      var id = $('#id').val();
-          url = "/admin/account/" + id;
-          method = "PUT";
-    }
     $.ajax({
         url: url,
         method: method,
@@ -279,6 +205,7 @@
 
   $(document).on('click', '.remove', function(){
   var id = $(this).attr('id');
+  var role = $(this).attr('role');
     $.confirm({
         title: 'Confirmation',
         content: 'You really want to remove this record?',
@@ -290,7 +217,7 @@
                 keys: ['enter', 'shift'],
                 action: function(){
                     return $.ajax({
-                        url:"/admin/account/"+id,
+                        url:"/admin/parent_students/"+id,
                         method:'DELETE',
                         data: {
                             _token: '{!! csrf_token() !!}',

@@ -29,7 +29,7 @@ class ClassesController extends Controller
 
     if(auth()->user()->roles()->pluck('id')->implode(', ') == '3'){
 
-        return redirect()->route('teacher.classes');
+        return redirect()->route('parent.students.index');
     }
 
        
@@ -155,5 +155,21 @@ class ClassesController extends Controller
     {
         $class->delete();
         return response()->json(['success' => 'Successfully removed.']);
+    }
+
+
+    public function advisory($id)
+    {
+        $classTeacher = ClassesTeachers::where('id', $id)->first();
+        if($classTeacher->isAdvisory == true){
+           $classTeacher->update([
+            'isAdvisory' => false,
+           ]);
+        }else{
+            $classTeacher->update([
+                'isAdvisory' => true,
+               ]);
+        }
+        return response()->json(['success' => 'Successfully updated.']);
     }
 }

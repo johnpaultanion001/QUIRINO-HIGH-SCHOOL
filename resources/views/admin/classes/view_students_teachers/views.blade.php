@@ -48,7 +48,13 @@
                             </button>
                           </div>
                         </div>
-                        
+                        <div class="d-flex px-2 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+                            <button id="{{$data->id}}" class="btn  {{$data->isAdvisory == true ? 'btn-success':'btn-secondary'}} btn-sm advisory" >
+                              ADVISORY
+                            </button>
+                          </div>
+                        </div>
                       </td>
                       <td>
                         <div class="d-flex px-2 py-1">
@@ -353,6 +359,63 @@
         }
     });
   });
+
+  $(document).on('click', '.advisory', function(){
+  var id = $(this).attr('id');
+    $.confirm({
+        title: 'Confirmation',
+        content: 'Are you sure?',
+        type: 'green',
+        buttons: {
+            confirm: {
+                text: 'confirm',
+                btnClass: 'btn-blue',
+                keys: ['enter', 'shift'],
+                action: function(){
+                    return $.ajax({
+                        url:"/admin/classes/advisory/"+id,
+                        method:'GET',
+                        data: {
+                            _token: '{!! csrf_token() !!}',
+                        },
+                        dataType:"json",
+                        beforeSend:function(){
+                          $(".advisory").attr("disabled", true);
+                        },
+                        success:function(data){
+                          $(".advisory").attr("disabled", false);
+                          
+                            if(data.success){
+                              $.confirm({
+                                title: 'Confirmation',
+                                content: data.success,
+                                type: 'green',
+                                buttons: {
+                                        confirm: {
+                                            text: 'confirm',
+                                            btnClass: 'btn-blue',
+                                            keys: ['enter', 'shift'],
+                                            action: function(){
+                                                location.reload();
+                                            }
+                                        },
+                                        
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
+            },
+            cancel:  {
+                text: 'cancel',
+                btnClass: 'btn-red',
+                keys: ['enter', 'shift'],
+            }
+        }
+    });
+  });
+  
 </script>
 
 

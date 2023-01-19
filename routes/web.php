@@ -40,6 +40,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('classes', 'ClassesController');
     Route::post('classes/view/assign', 'ClassesController@store_teacher_student')->name('classes.store_teacher_student');
     Route::delete('classes/view/assign/{id}/{role}', 'ClassesController@store_teacher_student_destroy')->name('classes.store_teacher_student_destroy');
+    Route::get('classes/advisory/{id}', 'ClassesController@advisory')->name('classes.advisory');
 
     //Mange Subjects
     Route::resource('subjects', 'SubjectController');
@@ -52,12 +53,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     //Mange parents
     Route::resource('parents', 'ParentsController');
-    
-    
-    
+    Route::resource('parent_students', 'StudentParentController');
+
 });
-
-
 
 // Teacher section
 Route::group(['prefix' => 'teacher', 'as' => 'teacher.', 'namespace' => 'Teacher', 'middleware' => ['auth']], function () {
@@ -69,9 +67,25 @@ Route::group(['prefix' => 'teacher', 'as' => 'teacher.', 'namespace' => 'Teacher
     Route::get('classes_attendance', 'ClassesController@classes_attendance')->name('classes_attendance');
     
     Route::get('classes/{teacher_id}/{student_id}/{class_id}/attendance', 'ClassesController@attendance_store')->name('attendance_store');
-
+    Route::delete('attendance/{id}', 'ClassesController@delete_attendance')->name('delete_attendance');
     // all classes
     Route::resource('students', 'StudentController');
     Route::get('students/{class}/classess', 'StudentController@classess_student')->name('classess_student');
     Route::resource('activity', 'ActivityController');
+
+    Route::get('notification', 'NotificationController@store')->name('notif.store');
+});
+
+
+// Parent section
+Route::group(['prefix' => 'parent', 'as' => 'parent.', 'namespace' => 'Parent', 'middleware' => ['auth']], function () {
+   
+    //Mange students
+   Route::resource('students', 'StudentController');
+
+   Route::get('notifications', 'StudentController@parentNotification')->name('parentNotification');
+   Route::get('faq', 'StudentController@faq')->name('faq');
+
+   
+
 });
